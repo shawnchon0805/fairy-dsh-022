@@ -1,0 +1,191 @@
+# Your patch layer for this dsh profile, applied after every bundle layer:
+# a top-level YAML array of loader patch entries (id-targeted config
+# overrides, disables, and insert lists; `!!js` expressions allowed).
+- id: ui-settings-account
+  name: "@deepseek-ai/dsh-client-ui-settings-account"
+  config:
+    version: 1
+    step: done
+    purpose: null
+    process: standard
+    completion: skipped
+    usage: compact
+    developerTools: false
+- id: ui-chat
+  name: "@deepseek-ai/dsh-client-ui-chat"
+  config:
+    transcriptView: standard
+    performanceUsage: compact
+- id: ui-settings
+  name: "@deepseek-ai/dsh-client-ui-settings"
+  config:
+    enabled: false
+- id: locale
+  name: "@deepseek-ai/dsh-client-locale"
+  config:
+    preference: zh
+- id: soul-md
+  name: dsh-soul-md
+  config:
+    cards: {}
+    active: ""
+    sessions: {}
+    showPersonaSwitcher: true
+    workspaces: {}
+    workspaceList:
+      - path: D:\WeChat Cache\personal
+        title: 独占
+      - path: D:\WeChat Cache\DSH Cache
+        title: 日常聊天
+      - path: D:\dafeiyu
+        title: dafeiyu
+      - path: D:\dsh-superagent\state\work\readme-about-section-ae11751f6e4a
+        title: readme-about-section-ae11751f6e4a
+      - path: D:\Project Valkyrie Crusade
+        title: Project Valkyrie Crusade
+      - path: C:\Users\shawn\OneDrive\文档\deepseek-harness\default-workspace
+        title: default-workspace
+    memory:
+      maxBytes: 1048576
+      inject: true
+      layered: true
+      injectMaxChars: 8000
+      recall: keyword
+      recallPlacement: context
+      indexMode: all
+      recallMaxTopics: 5
+      recallMaxChars: 1600
+      compactionRecall: true
+      order: 0.5
+      path: ""
+      workspaceFile: ""
+    path: ""
+    fallback: ""
+    order: 0
+    complete: false
+    allowTemplates: false
+    watch: true
+    debounceMs: 300
+    skipSubagents: true
+    soulMaxBytes: 65536
+    personas:
+      dir: ""
+      workspaceFile: .dsh-persona.md
+    roster: []
+- id: agent-default-model
+  name: "@deepseek-ai/dsh-agent-default-model"
+  config:
+    provider: deepseek-account
+    model: deepseek-flash
+    reasoningEffort: high
+- id: genui
+  name: dsh-genui
+  config:
+    sectionOrder: 80
+    sectionName: genui:cards
+    promptEnabled: false
+- id: dsh-at-file
+  disabled: false
+
+# --- Fairy DSH: 0.2.2 port, voice plugin excluded (triage) ---
+- insert:
+    - id: fairy-compat-settings-scope
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/compat/dsh-fairy-compat-settings-scope/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-compat-bg-eye
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/compat/dsh-fairy-compat-bg-eye/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-balance-meter
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-balance-meter/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-browser-dock
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-browser-dock/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-startup
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-fairy-startup/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-visual
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-fairy-visual/lib/index.js'
+      inject: [clientModules]
+
+# --- third-party plugins paused for the Fairy install ---
+- id: token-diet
+  disabled: true
+
+# --- dsh-soul-md -----------------------------------------------------------
+# Single row. Also carries the soul_read / soul_update / soul cards /
+# personas / memory tooling: those tools disappear while this is disabled.
+# The profile's big `- id: soul-md / config:` block stays valid and is simply
+# not loaded; remove this entry to restore it unchanged.
+- id: soul-md
+  disabled: true
+
+# --- dsh-social-bridge-plugin (WeChat bridge) ------------------------------
+# This bundle ships FOUR independent top-level rows in three separate
+# `- insert:` lists. Disabling only the first one leaves the two agent presets
+# and the tool catalog live (the presets would then appear in the preset
+# picker and wait on `wechatToolCatalog`), so all four are disabled together.
+- id: dsh-social-bridge-plugin
+  disabled: true
+- id: wechat-tool-catalog
+  disabled: true
+# name: @deepseek-ai/dsh-agent-preset, but inserted by the wechat bundle
+- id: preset-wechat-social
+  disabled: true
+- id: preset-wechat-assistant
+  disabled: true
+
+# --- dsh-context -----------------------------------------------------------
+# Single host row (its `./client` browser half goes away with it).
+- id: dsh-context
+  disabled: true
+
+# --- billion-context: bili-native ONLY -------------------------------------
+# billion-context inserts TWO rows. bili-native is the plugin itself and is
+# safe to disable: its own bundle patch says "disabling or kill-switching
+# bili-native must leave the gate service alive so the presets fall back to
+# STOCK dsh compaction instead of pending forever".
+- id: bili-native
+  disabled: true
+#
+# bili-compaction-gate is DELIBERATELY LEFT ENABLED. Its patch states:
+#   "Do NOT disable the bili-compaction-gate entry itself: it carries the
+#    service the presets wait on; to uninstall, remove billion-context from
+#    dsh.profile.bundles instead."
+# Disabling it is the documented way to get sessions stuck at creation, and
+# the kernel presets depend on the service it registers. If you really want it
+# gone, delete the bundle from dsh.profile.bundles — do not patch it off here.
+# - id: bili-compaction-gate
+#   disabled: true
+
+# --- dsh-at-file -----------------------------------------------------------
+# The profile patch currently ends with `- id: dsh-at-file / disabled: false`.
+# This entry comes after it in the same layer, so disabled: true wins.
+- id: dsh-at-file
+  disabled: true
+
+# ===========================================================================
+# NOT INCLUDED ON PURPOSE — installed as profile dependencies but NOT in
+# dsh.profile.bundles, so they contribute no loader rows and cannot run.
+# Adding an entry for them would only print "patch: entry 'x' not found".
+# If you ever add one of these to dsh.profile.bundles, uncomment its line.
+# ---------------------------------------------------------------------------
+# - id: dsh-expression      # dsh-meme
+#   disabled: true
+# - id: dsh-market          # dshmarket
+#   disabled: true
+# - id: dsh-pet             # dsh-pet
+#   disabled: true
+# - id: dsh-whale-widget    # dsh-whale-widget
+#   disabled: true
+# - id: genui               # dsh-genui (the profile patch's genui entry is
+#   disabled: true          # already inert: the row does not exist)
+# - id: dsh-bili-whale      # dsh-bili-whale
+#   disabled: true
+# - id: wechat-bridge       # dsh-wechat-bridge
+#   disabled: true
+# - id: tts                 # @memef1f1y/dsh-plugin-tts
+#   disabled: true
+# - id: modlens             # @liustack/modlens
+#   disabled: true
+# ===========================================================================

@@ -1,0 +1,21 @@
+{
+  "name": "dsh-fairy-compat-settings-scope",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Compat shim: provides the legacy client service \"settingsScope\" expected by the Fairy DSH suite on DSH 0.2.1-rc.5, backed by the real settings remote face when it exists and by an in-memory store otherwise.",
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-settings"
+      ]
+    }
+  }
+}

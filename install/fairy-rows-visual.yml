@@ -1,0 +1,27 @@
+# Fairy DSH — stage 2 (optional): the visual half, behind a compatibility shim.
+#
+# dsh-fairy-visual's client plugin injects the service `settingsScope`, which
+# DSH 0.2.1-rc.5 no longer provides. The web shell's boot audit throws
+# `web boot: N entries did not activate` when ANY entry stays pending, so
+# without a provider the whole web UI fails to boot — not just this plugin.
+#
+# `dsh-fairy-compat-settings-scope` (compat/) provides `settingsScope`:
+#   ctx.provide('settingsScope', { bind({ namespace }) -> { getSnapshot, subscribe, set, update, ... } })
+# It reads/writes through 0.2.1's `remote.settings.describe()` / `.mutate()`
+# and falls back to an in-memory store if that backend is unavailable.
+# It declares `inject: []`, so it can never itself block boot.
+#
+# Mount ONLY after the stage 1 rows are proven good in the running app.
+
+- insert:
+    - id: fairy-compat-settings-scope
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/compat/dsh-fairy-compat-settings-scope/lib/index.js'
+      inject: [clientModules]
+    # Turns the mascot eye into a readable watermark: no input capture, no radial
+    # text fade, low opacity (localStorage `dsh.fairy.eyeBg` = 'watermark' | 'behind').
+    - id: fairy-compat-bg-eye
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/compat/dsh-fairy-compat-bg-eye/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-visual
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-fairy-visual/lib/index.js'
+      inject: [clientModules]

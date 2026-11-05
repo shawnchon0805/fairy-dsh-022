@@ -1,0 +1,25 @@
+# Fairy DSH plugin suite — loader rows.
+# Appended by the installer. Each Fairy package has no dsh.bundle, so it must be
+# inserted explicitly by absolute path; the tree lives outside every profile
+# (~/.dsh/plugin-suite/fairy-dsh) so its pinned @deepseek-ai/dsh-settings
+# 0.1.1-rc.2 cannot shadow the host's settings package.
+#
+# `inject: [clientModules]` makes the host register each package's dsh.client
+# bundle with the web module loader (that is how the client half reaches the UI).
+
+- insert:
+    - id: fairy-balance-meter
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-balance-meter/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-browser-dock
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-browser-dock/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-startup
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-fairy-startup/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-voice
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-fairy-voice/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-visual
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-fairy-visual/lib/index.js'
+      inject: [clientModules]

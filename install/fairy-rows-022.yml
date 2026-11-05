@@ -1,0 +1,31 @@
+# Fairy DSH — full suite for DSH 0.2.2-rc.
+#
+# Same external-tree layout as stage 1/2, plus the two compatibility layers:
+#   dsh-fairy-compat-settings-scope  provides the removed `settingsScope` service
+#   dsh-fairy-compat-bg-eye          keeps the mascot eye readable as a background
+# The client bundles of fairy-voice / fairy-startup / fairy-visual carry the
+# 0.2.2 port from patching\apply-022-patches.cjs (icon names, workspace API,
+# settings invalidation). Keep that script idempotent and re-run after upgrades.
+
+- insert:
+    - id: fairy-compat-settings-scope
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/compat/dsh-fairy-compat-settings-scope/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-compat-bg-eye
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/compat/dsh-fairy-compat-bg-eye/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-balance-meter
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-balance-meter/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-browser-dock
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-browser-dock/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-startup
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-fairy-startup/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-voice
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-fairy-voice/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-visual
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-fairy-visual/lib/index.js'
+      inject: [clientModules]

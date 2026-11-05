@@ -1,0 +1,121 @@
+# ===========================================================================
+# disable-thirdparty.yml
+# Temporarily disable every THIRD-PARTY plugin row in the `desktop` DSH
+# profile so the Fairy suite (dsh-fairy-*, dsh-balance-meter,
+# dsh-browser-dock) can be installed without conflicts.
+#
+# HOW TO APPLY
+#   Append this whole file to the END of:
+#     %USERPROFILE%\.dsh\profiles\desktop\cordis.patch.yml
+#   (exactly what the app's own "disable plugin" switch does — see
+#   writePluginEnabled() in dsh-plugin-manager.js; it appends
+#   `- id: <rowId>` + `disabled: true` and omits `name`.)
+#
+# WHY AT THE END
+#   Layer order at boot: bundle patches -> profile cordis.patch.yml ->
+#   ~/.dsh/cordis.patch.yml -> launch overlays. Within a layer, later entries
+#   win per key (target[key] = value). Appending last therefore overrides
+#   both the bundle `insert:` rows and the existing trailing
+#   `- id: dsh-at-file / disabled: false` in the profile patch.
+#
+# WHY `name` IS OMITTED
+#   A name mismatch makes the loader SKIP the patch
+#   ("patch: name mismatch for ..., skipping"); an id-only match is enough.
+#   A stale id only warns ("patch: entry 'x' not found") and never fails boot.
+#
+# STATE THIS WAS GENERATED FROM (2026-11-06,
+# C:\Users\shawn\.dsh\profiles\desktop\package.json dsh.profile.bundles):
+#   @deepseek-ai/dsh-base, @deepseek-ai/dsh-web-app, dsh-token-diet,
+#   dsh-soul-md, dsh-social-bridge-plugin, dsh-context, billion-context,
+#   @deepseek-ai/dsh-experimental-agent-team-profile,
+#   @deepseek-ai/dsh-experimental-voice-input-bundle,
+#   @deepseek-ai/dsh-experimental-auto-review, dsh-at-file
+# Composed row inventory replayed offline with the app's own
+# applyEntryPatches(): 205 top-level rows, 8 of them contributed by
+# third-party bundles (plus preset-wechat-social / preset-wechat-assistant,
+# whose `name` is @deepseek-ai/dsh-agent-preset but which are inserted by the
+# third-party dsh-social-bridge-plugin bundle).
+# ===========================================================================
+
+# --- dsh-token-diet --------------------------------------------------------
+# Single row, no dependants.
+- id: token-diet
+  disabled: true
+
+# --- dsh-soul-md -----------------------------------------------------------
+# Single row. Also carries the soul_read / soul_update / soul cards /
+# personas / memory tooling: those tools disappear while this is disabled.
+# The profile's big `- id: soul-md / config:` block stays valid and is simply
+# not loaded; remove this entry to restore it unchanged.
+- id: soul-md
+  disabled: true
+
+# --- dsh-social-bridge-plugin (WeChat bridge) ------------------------------
+# This bundle ships FOUR independent top-level rows in three separate
+# `- insert:` lists. Disabling only the first one leaves the two agent presets
+# and the tool catalog live (the presets would then appear in the preset
+# picker and wait on `wechatToolCatalog`), so all four are disabled together.
+- id: dsh-social-bridge-plugin
+  disabled: true
+- id: wechat-tool-catalog
+  disabled: true
+# name: @deepseek-ai/dsh-agent-preset, but inserted by the wechat bundle
+- id: preset-wechat-social
+  disabled: true
+- id: preset-wechat-assistant
+  disabled: true
+
+# --- dsh-context -----------------------------------------------------------
+# Single host row (its `./client` browser half goes away with it).
+- id: dsh-context
+  disabled: true
+
+# --- billion-context: bili-native ONLY -------------------------------------
+# billion-context inserts TWO rows. bili-native is the plugin itself and is
+# safe to disable: its own bundle patch says "disabling or kill-switching
+# bili-native must leave the gate service alive so the presets fall back to
+# STOCK dsh compaction instead of pending forever".
+- id: bili-native
+  disabled: true
+#
+# bili-compaction-gate is DELIBERATELY LEFT ENABLED. Its patch states:
+#   "Do NOT disable the bili-compaction-gate entry itself: it carries the
+#    service the presets wait on; to uninstall, remove billion-context from
+#    dsh.profile.bundles instead."
+# Disabling it is the documented way to get sessions stuck at creation, and
+# the kernel presets depend on the service it registers. If you really want it
+# gone, delete the bundle from dsh.profile.bundles — do not patch it off here.
+# - id: bili-compaction-gate
+#   disabled: true
+
+# --- dsh-at-file -----------------------------------------------------------
+# The profile patch currently ends with `- id: dsh-at-file / disabled: false`.
+# This entry comes after it in the same layer, so disabled: true wins.
+- id: dsh-at-file
+  disabled: true
+
+# ===========================================================================
+# NOT INCLUDED ON PURPOSE — installed as profile dependencies but NOT in
+# dsh.profile.bundles, so they contribute no loader rows and cannot run.
+# Adding an entry for them would only print "patch: entry 'x' not found".
+# If you ever add one of these to dsh.profile.bundles, uncomment its line.
+# ---------------------------------------------------------------------------
+# - id: dsh-expression      # dsh-meme
+#   disabled: true
+# - id: dsh-market          # dshmarket
+#   disabled: true
+# - id: dsh-pet             # dsh-pet
+#   disabled: true
+# - id: dsh-whale-widget    # dsh-whale-widget
+#   disabled: true
+# - id: genui               # dsh-genui (the profile patch's genui entry is
+#   disabled: true          # already inert: the row does not exist)
+# - id: dsh-bili-whale      # dsh-bili-whale
+#   disabled: true
+# - id: wechat-bridge       # dsh-wechat-bridge
+#   disabled: true
+# - id: tts                 # @memef1f1y/dsh-plugin-tts
+#   disabled: true
+# - id: modlens             # @liustack/modlens
+#   disabled: true
+# ===========================================================================

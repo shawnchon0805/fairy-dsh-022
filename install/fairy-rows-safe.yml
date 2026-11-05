@@ -1,0 +1,24 @@
+# Fairy DSH — client-safe subset (stage 1).
+#
+# Only the two packages whose *client* halves rely exclusively on client
+# services and slot names that still exist in DSH 0.2.1-rc.5:
+#   dsh-balance-meter : inject ['slots','connection','sessions'] -> sidebar.footer.action
+#   dsh-browser-dock  : inject ["slots","sessions"]              -> shell.overlay
+#
+# Deliberately NOT mounted here, see STAGE2.md:
+#   dsh-fairy-visual  : client injects the removed `settingsScope` service
+#   dsh-fairy-voice   : client renders IconPlayOutline16/IconStopFill16, removed
+#   dsh-fairy-startup : client injects 'workspaces' and drives the 0.1.1 workspace starter
+#
+# Why it matters: the web shell's boot audit (shell.js `IZ`) throws
+# `web boot: N entries did not activate` for ANY entry that ends up pending or
+# failed — one incompatible client plugin takes the whole web UI down, not just
+# itself. Host halves of all five packages load fine.
+
+- insert:
+    - id: fairy-balance-meter
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-balance-meter/lib/index.js'
+      inject: [clientModules]
+    - id: fairy-browser-dock
+      name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-browser-dock/lib/index.js'
+      inject: [clientModules]
