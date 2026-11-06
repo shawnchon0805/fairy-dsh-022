@@ -53,19 +53,7 @@ powershell -ExecutionPolicy Bypass -File install/apply-patch.ps1 -Staged desktop
 
 补丁与兼容插件是对上游 Apache-2.0 项目的修改/扩展，随上游许可；上游版权与商标声明见 <https://github.com/Chengzhibense/Fairy-DSH>（`LICENSE`、`NOTICE`、`TRADEMARKS.md`）。
 
-## 语音（fairy-voice 后端）
+## 语音
 
-上游要求本机跑 GPT-SoVITS 的 \/tts\ 服务（127.0.0.1:9880）并提供作者私有的参考音
-（\airy_ref.wav/.txt\），两者都不随仓库发布，所以 \dsh-fairy-voice\ 装上后默认不会出声。
-
-\	ools/fairy-tts-bridge.cjs\ 保留 GPT-SoVITS 的 \/tts\ 契约（raw PCM 32 kHz mono），
-改用 **Microsoft Edge TTS** 合成（\msedge-tts\ 2.1.1 + ffmpeg 转码），无需模型与参考音：
-
-\\\powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File tools\\start-fairy-tts.ps1          # 启动
-powershell -NoProfile -ExecutionPolicy Bypass -File tools\\start-fairy-tts.ps1 -Action status
-powershell -NoProfile -ExecutionPolicy Bypass -File tools\\start-fairy-tts.ps1 -Voice zh-CN-XiaoyiNeural -Action restart
-\\\
-
-可用中文女声：\zh-CN-XiaoxiaoNeural\（默认）、\zh-CN-XiaoyiNeural\、\zh-CN-liaoning-XiaobeiNeural\、\zh-CN-shaanxi-XiaoniNeural\。
-想换成作者的原声需要自建 GPT-SoVITS 并配置参考音，bridge 不参与。
+fairy-voice 的本地 TTS 后端与 Fairy 参考音属于私有资产，单独放在私有仓库 `fairy-dsh-voice`；
+本公共仓库不包含任何音色素材或语音集成脚本。
