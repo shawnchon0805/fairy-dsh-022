@@ -191,3 +191,9 @@
 # - id: modlens             # @liustack/modlens
 #   disabled: true
 # ===========================================================================
+# --- @memef1f1y/dsh-plugin-tts ---------------------------------------------
+# The bundle inserts its own row with id `tts` (Edge TTS / RVC read-aloud button).
+# Its speaker button shadows Fairy's voice: clicking it synthesizes with Edge TTS
+# and never reaches dsh-fairy-voice, so the user hears a different voice entirely.
+- id: tts
+  disabled: true
