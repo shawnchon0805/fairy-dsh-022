@@ -6,7 +6,7 @@
 
 | 目录 | 内容 |
 | --- | --- |
-| `install/patching/` | 幂等补丁脚本：`apply-022-patches.cjs`（0.2.2 API 适配）、`apply-ui-patches.cjs`（余额币种 / 眼睛水印）、`restore-pristine-balance-meter.cjs` |
+| `install/patching/` | 幂等补丁脚本：`apply-022-patches.cjs`（0.2.2 API 适配）、`apply-ui-patches.cjs`（余额币种 / 眼睛水印）、`apply-balance-dual-unit.cjs`（USD 主单位 + 美元/人民币分行显示）、`restore-pristine-balance-meter.cjs` |
 | `install/` | profile 补丁行与变体（`fairy-rows-*.yml`、`desktop-cordis.*.yml`）、补丁生成 `build-patch.mjs`、应用/回滚 `apply-patch.ps1` / `uninstall.ps1`、隔离冒烟 `rehearse.ps1`、安装树校验 `check-tree.mjs` |
 | `compat/` | 两个本地兼容插件：`dsh-fairy-compat-settings-scope`（补回 0.2.2 已移除的 `settingsScope` 服务）、`dsh-fairy-compat-bg-eye`（眼睛水印化） |
 | `verify/` | 客户端 apply 冒烟、插槽覆盖核对、0.2.2 启动图核对、0.2.1 兼容核对脚本 |
