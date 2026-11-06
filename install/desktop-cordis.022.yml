@@ -110,6 +110,32 @@
     - id: fairy-visual
       name: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-fairy-visual/lib/index.js'
       inject: [clientModules]
+    # MCP bridges from the suite's own reference profile: without these,
+    # fairy-browser-dock has no browser to drive. Both run scripts resolved from the
+    # Fairy tree with the host's own Node binary (Windows .bin shims are .cmd files).
+    - id: mcp-playwright
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: playwright
+        transport: stdio
+        command: !!js process.execPath
+        args:
+          - 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/dsh-browser-dock/proxy.cjs'
+          - '--browser'
+          - 'msedge'
+          - '--headless'
+          - '--user-data-dir'
+          - 'C:/Users/shawn/.dsh/playwright-profile'
+        env:
+          DSH_FAIRY_PLAYWRIGHT_MCP: 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/@playwright/mcp/cli.js'
+    - id: mcp-context7
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: context7
+        transport: stdio
+        command: !!js process.execPath
+        args:
+          - 'C:/Users/shawn/.dsh/plugin-suite/fairy-dsh/node_modules/@upstash/context7-mcp/dist/index.js'
 
 # --- third-party plugins paused for the Fairy install ---
 - id: token-diet

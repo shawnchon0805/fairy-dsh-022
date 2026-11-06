@@ -8,7 +8,7 @@
 
 | 组件 | 角色 | 0.2.2 适配 |
 | --- | --- | --- |
-| `dsh-balance-meter` 0.2.0 | 侧栏余额/用量 | 仅本地增强：按账户币种显示（USD → `$17.13`，CNY → `¥`） |
+| `dsh-balance-meter` 0.2.0 | 侧栏余额/用量 | 本地增强：USD 主单位；美元与人民币余额**分行显示**（`余额 USD $17.13` / `余额 CNY ¥-0.25`）；今日估算跟随主币种 |
 | `dsh-browser-dock` 0.1.0 | 浏览器 Dock | 无需改动 |
 | `dsh-fairy-startup` 1.0.0 | 启动行为（清掉上次恢复的会话选择） | 就绪判断改 `phase === 'ready'`；启动会话 `workspaces.startSession()` → 回退 `ctx.uiWorkspace.startSession()`；`sessions.clear()` 失败不致命 |
 | `dsh-fairy-voice` 1.0.0 | 朗读/语音 | 图标别名到 `IconPlayOutlineRegular` / `IconStopFillRegular` |
